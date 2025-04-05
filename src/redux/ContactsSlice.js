@@ -32,12 +32,7 @@ const ContactSlice = createSlice({
 
     remove: (state, action) => {
       state.users = state.users.filter((user) => user.id != action.payload);
-      
     },
-    setShow: (state,action) =>{
-      state.userDetail = state.users.filter((user)=>user.id === action.payload)
-      state.show = !state.show
-},
     editUser: (state,action) =>{
         state.users =  state.users.map((user)=>(
               user.id === action.payload.id ? action.payload : user
@@ -47,15 +42,19 @@ const ContactSlice = createSlice({
     setStatus: (state,action) =>{
           state.isLoading = action.payload
     },
+    setShow: (state,action) =>{
+          state.userDetail = state.users.filter((user)=>user.id === action.payload)
+          state.show = !state.show
+    },
     
     setSearch: (state,action) =>{
           state.searchUser = action.payload
-       
+         
     }
   },
 });
 
-export const { addUser, remove,showUser,editUser,setStatus ,setSearch,setShow} = ContactSlice.actions;
+export const { addUser, remove,showUser,editUser,setStatus ,setSearch ,setShow} = ContactSlice.actions;
 
 export default ContactSlice.reducer;
 
@@ -70,7 +69,7 @@ export function fetchUsers() {
     try {
        
       const response = await fetch(
-        `https://663124bbc92f351c03dc5072.mockapi.io/contacts/users`
+        `https://67f0b7fe2a80b06b8898713e.mockapi.io/contacts/users`
       );
       const data = await response.json();
       dispatch(setStatus(STATUS.Success))
@@ -90,7 +89,7 @@ export function createUser(user) {
     dispatch(setStatus(STATUS.Loading))
       
       const response = await fetch(
-        `https://663124bbc92f351c03dc5072.mockapi.io/contacts/users`,
+        `https://67f0b7fe2a80b06b8898713e.mockapi.io/contacts/users`,
         {
           method: "POST",
           headers: { "content-type": "application/json" },
@@ -100,7 +99,6 @@ export function createUser(user) {
       try {
         const data = await response.json()
         dispatch(addUser(data))
-       
         dispatch(setStatus(STATUS.Success))
       } catch (error) {
         console.log(error);
@@ -117,14 +115,13 @@ export function deleteUser(id) {
     dispatch(setStatus(STATUS.Loading))
     try {
       await fetch(
-        `https://663124bbc92f351c03dc5072.mockapi.io/contacts/users/${id}`,
+        `https://67f0b7fe2a80b06b8898713e.mockapi.io/contacts/users/${id}`,
         {
           method: "DELETE",
         }
       );
       dispatch(remove(id));
       dispatch(setStatus(STATUS.Success))
-    
     } catch (error) {
       console.log(error);
     }
@@ -135,7 +132,7 @@ export function UpdateUser(id,user) {
   return async function updateUserThunk(dispatch) {
     dispatch(setStatus(STATUS.Loading))
     const response = await fetch(
-      `https://663124bbc92f351c03dc5072.mockapi.io/contacts/users/${id}`,
+      `https://67f0b7fe2a80b06b8898713e.mockapi.io/contacts/users/${id}`,
       {
         method: "PUT",
         headers: { "content-type": "application/json" },
